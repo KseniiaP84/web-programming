@@ -1,28 +1,26 @@
+
 name: CI
 
 on:
   push:
-    branches: [ "main", "feature-cicd-pipeline" ]
+    branches: ["main", "feature-cicd-pipeline"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
 
-    - name: Run Tests
-      run: vendor/bin/phpunit
-
-    - name: Demonstrate GitHub Secrets
-      run: echo "Secret: ${{ secrets.MY_SUPER_SECRET_KEY }}"
+      - name: Run Tests
+        run: vendor/bin/phpunit
