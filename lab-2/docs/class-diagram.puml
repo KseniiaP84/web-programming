@@ -1,0 +1,177 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Доступ.City — діаграма класів (моделі та контролери)
+
+abstract class BaseController {
+  +middleware: String
+  +responseFormat: String
+  +statusCode: Int
+  +requestId: String
+  +rateLimit: Int
+  +index(): Response
+  +show(id: Int): Response
+  +store(data: Map): Response
+  +update(id: Int, data: Map): Response
+  +destroy(id: Int): Response
+}
+
+class PlaceController {
+  +searchQuery: String
+  +cityFilter: String
+  +categoryFilter: Int
+  +page: Int
+  +perPage: Int
+  +search(query: String): Response
+  +showPlace(id: Int): Response
+  +create(data: Map): Response
+  +updatePlace(id: Int, data: Map): Response
+  +submitForReview(id: Int): Response
+}
+
+class ReviewController {
+  +placeId: Int
+  +userId: Int
+  +ratingFilter: Int
+  +page: Int
+  +perPage: Int
+  +listForPlace(placeId: Int): Response
+  +createReview(data: Map): Response
+  +updateReview(id: Int, data: Map): Response
+  +deleteReview(id: Int): Response
+  +reportReview(id: Int): Response
+}
+
+class ModerationController {
+  +moderatorId: Int
+  +queueStatus: String
+  +dateFrom: Date
+  +dateTo: Date
+  +page: Int
+  +queue(): Response
+  +approve(placeId: Int): Response
+  +reject(placeId: Int, reason: String): Response
+  +reviewReport(reportId: Int): Response
+  +history(): Response
+}
+
+class User {
+  +id: Int
+  +name: String
+  +email: String
+  +passwordHash: String
+  +role: String
+  +register(data: Map): Bool
+  +login(email: String, password: String): Bool
+  +updateProfile(data: Map): Bool
+  +hasRole(role: String): Bool
+  +deactivate(): Bool
+}
+
+class Place {
+  +id: Int
+  +ownerId: Int
+  +categoryId: Int
+  +name: String
+  +address: String
+  +create(data: Map): Place
+  +update(data: Map): Bool
+  +publish(): Bool
+  +search(query: String): List
+  +setModerationStatus(status: String): Bool
+}
+
+class Category {
+  +id: Int
+  +name: String
+  +slug: String
+  +description: String
+  +isActive: Bool
+  +create(data: Map): Category
+  +rename(name: String): Bool
+  +deactivate(): Bool
+  +listActive(): List
+  +findBySlug(slug: String): Category
+}
+
+class AccessibilityFeature {
+  +id: Int
+  +name: String
+  +description: String
+  +featureType: String
+  +isActive: Bool
+  +create(data: Map): AccessibilityFeature
+  +update(data: Map): Bool
+  +deactivate(): Bool
+  +listActive(): List
+  +validateValue(value: String): Bool
+}
+
+class PlaceAccessibility {
+  +id: Int
+  +placeId: Int
+  +featureId: Int
+  +value: String
+  +notes: String
+  +saveValue(value: String): Bool
+  +updateNotes(notes: String): Bool
+  +markUnknown(): Bool
+  +validate(): Bool
+  +delete(): Bool
+}
+
+class Review {
+  +id: Int
+  +userId: Int
+  +placeId: Int
+  +rating: Int
+  +comment: String
+  +create(data: Map): Review
+  +edit(comment: String, rating: Int): Bool
+  +delete(): Bool
+  +validateRating(rating: Int): Bool
+  +report(): Report
+}
+
+class Report {
+  +id: Int
+  +userId: Int
+  +placeId: Int
+  +reason: String
+  +status: String
+  +submit(data: Map): Report
+  +assignModerator(userId: Int): Bool
+  +resolve(note: String): Bool
+  +reject(note: String): Bool
+  +reopen(): Bool
+}
+
+class ModerationLog {
+  +id: Int
+  +moderatorId: Int
+  +placeId: Int
+  +action: String
+  +note: String
+  +record(action: String): Bool
+  +updateNote(note: String): Bool
+  +listForPlace(placeId: Int): List
+  +listForModerator(userId: Int): List
+  +exportCsv(): File
+}
+
+BaseController <|-- PlaceController
+BaseController <|-- ReviewController
+BaseController <|-- ModerationController
+
+User "1" -- "0..*" Place : owns
+Category "1" o-- "0..*" Place : groups
+Place "1" *-- "0..*" PlaceAccessibility : features
+AccessibilityFeature "1" -- "0..*" PlaceAccessibility : describes
+User "1" -- "0..*" Review : writes
+Place "1" *-- "0..*" Review : receives
+User "1" -- "0..*" Report : submits
+Place "1" -- "0..*" Report : concerns
+User "1" -- "0..*" ModerationLog : performs
+Place "1" *-- "0..*" ModerationLog : history
+@enduml

@@ -1,0 +1,41 @@
+digraph UseCase {
+ graph [rankdir=LR, bgcolor="white", pad="0.25", nodesep="0.35", ranksep="0.65", labelloc="t", label="Доступ.City — діаграма варіантів використання", fontsize=20, fontname="Arial"];
+ node [fontname="Arial", fontsize=10, color="#3A526B", fontcolor="#172B3A"];
+ edge [fontname="Arial", fontsize=9, color="#526D82", fontcolor="#34495E", arrowsize=0.7];
+ Visitor [shape=plaintext, label="Відвідувач"];
+ User [shape=plaintext, label="Зареєстрований користувач"];
+ Owner [shape=plaintext, label="Власник закладу"];
+ Moderator [shape=plaintext, label="Модератор"];
+ subgraph cluster_system {
+  label="Доступ.City"; color="#8BA7BD"; style="rounded";
+  Search [shape=ellipse, label="Знайти заклад"];
+  View [shape=ellipse, label="Переглянути доступність"];
+  Categories [shape=ellipse, label="Переглянути категорії"];
+  Details [shape=ellipse, label="Переглянути деталі закладу"];
+  Review [shape=ellipse, label="Залишити відгук"];
+  Report [shape=ellipse, label="Повідомити про неточність"];
+  Profile [shape=ellipse, label="Керувати профілем"];
+  SaveSearch [shape=ellipse, label="Зберегти результати пошуку"];
+  Add [shape=ellipse, label="Додати заклад"];
+  Edit [shape=ellipse, label="Редагувати власний заклад"];
+  Status [shape=ellipse, label="Переглянути статус перевірки"];
+  Moderate [shape=ellipse, label="Перевірити заклад"];
+  Decision [shape=ellipse, label="Схвалити або відхилити дані"];
+  Log [shape=ellipse, label="Переглянути журнал модерації"];
+  Auth [shape=ellipse, label="Перевірити права доступу"];
+ }
+ Visitor -> Search; Visitor -> View; Visitor -> Categories; Visitor -> Details;
+ User -> Review; User -> Report; User -> Profile; User -> SaveSearch;
+ Owner -> Add; Owner -> Edit; Owner -> Status;
+ Moderator -> Moderate; Moderator -> Decision; Moderator -> Log;
+ View -> Details [style=dashed, label="include"];
+ Add -> Auth [style=dashed, label="include"];
+ Edit -> Auth [style=dashed, label="include"];
+ Review -> Auth [style=dashed, label="include"];
+ Report -> Auth [style=dashed, label="include"];
+ Decision -> Moderate [style=dashed, label="extend"];
+ SaveSearch -> Search [style=dashed, label="extend"];
+ User -> Visitor [style=dotted, label="узагальнення", arrowhead=empty];
+ Owner -> User [style=dotted, arrowhead=empty];
+ Moderator -> User [style=dotted, arrowhead=empty];
+}
