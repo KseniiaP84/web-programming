@@ -1,7 +1,7 @@
 
 # Веб-програмування — Лабораторна робота №1
 
-![CI Status](https://github.com/KseniiaP84/web-programming/actions/workflows/ci.yml/badge.svg?branch=feature-cicd-pipeline)
+![CI Status](https://github.com/KseniiaP84/web-programming/actions/workflows/ci.yml/badge.svg?branch=main)
 
 Проєкт для вивчення системи контролю версій Git та налаштування автоматизованого CI/CD пайплайну на PHP.
 
