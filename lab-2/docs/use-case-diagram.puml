@@ -1,0 +1,60 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+title Доступ.City — діаграма варіантів використання
+
+actor "Відвідувач" as Visitor
+actor "Зареєстрований\nкористувач" as User
+actor "Власник закладу" as Owner
+actor "Модератор" as Moderator
+
+User --|> Visitor
+Owner --|> User
+Moderator --|> User
+
+rectangle "Доступ.City" {
+  usecase "Знайти заклад" as UC_Search
+  usecase "Переглянути доступність" as UC_View
+  usecase "Переглянути категорії" as UC_Categories
+  usecase "Залишити відгук" as UC_Review
+  usecase "Повідомити про неточність" as UC_Report
+  usecase "Керувати профілем" as UC_Profile
+  usecase "Додати заклад" as UC_Add
+  usecase "Редагувати власний заклад" as UC_Edit
+  usecase "Переглянути статус перевірки" as UC_Status
+  usecase "Перевірити заклад" as UC_Moderate
+  usecase "Схвалити або відхилити дані" as UC_Decision
+  usecase "Переглянути журнал модерації" as UC_Log
+  usecase "Переглянути деталі закладу" as UC_Details
+  usecase "Перевірити права доступу" as UC_Auth
+  usecase "Зберегти результати пошуку" as UC_SaveSearch
+}
+
+Visitor --> UC_Search
+Visitor --> UC_View
+Visitor --> UC_Categories
+Visitor --> UC_Details
+
+User --> UC_Review
+User --> UC_Report
+User --> UC_Profile
+User --> UC_SaveSearch
+
+Owner --> UC_Add
+Owner --> UC_Edit
+Owner --> UC_Status
+
+Moderator --> UC_Moderate
+Moderator --> UC_Decision
+Moderator --> UC_Log
+
+UC_View .> UC_Details : <<include>>
+UC_Add .> UC_Auth : <<include>>
+UC_Edit .> UC_Auth : <<include>>
+UC_Review .> UC_Auth : <<include>>
+UC_Report .> UC_Auth : <<include>>
+UC_Decision .> UC_Moderate : <<extend>>
+UC_SaveSearch .> UC_Search : <<extend>>
+@enduml

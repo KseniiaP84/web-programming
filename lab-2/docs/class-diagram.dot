@@ -1,0 +1,30 @@
+digraph ClassDiagram {
+ graph [rankdir=TB, bgcolor="white", pad="0.25", nodesep="0.35", ranksep="0.55", labelloc="t", label="Доступ.City — діаграма класів", fontsize=20, fontname="Arial", splines=ortho];
+ node [shape=record, fontname="Arial", fontsize=9, color="#3A526B", fontcolor="#172B3A", style="rounded,filled", fillcolor="#F5F8FA"];
+ edge [fontname="Arial", fontsize=8, color="#526D82", fontcolor="#34495E", arrowsize=0.7];
+ BaseController [label="{BaseController (abstract)|middleware: String\\lresponseFormat: String\\lstatusCode: Int\\lrequestId: String\\lrateLimit: Int\\l|index(): Response\\lshow(id: Int): Response\\lstore(data: Map): Response\\lupdate(id: Int, data: Map): Response\\ldestroy(id: Int): Response\\l}"];
+ PlaceController [label="{PlaceController|searchQuery: String\\lcityFilter: String\\lcategoryFilter: Int\\lpage: Int\\lperPage: Int\\l|search(query: String): Response\\lshowPlace(id: Int): Response\\lcreate(data: Map): Response\\lupdatePlace(id: Int, data: Map): Response\\lsubmitForReview(id: Int): Response\\l}"];
+ ReviewController [label="{ReviewController|placeId: Int\\luserId: Int\\lratingFilter: Int\\lpage: Int\\lperPage: Int\\l|listForPlace(placeId: Int): Response\\lcreateReview(data: Map): Response\\lupdateReview(id: Int, data: Map): Response\\ldeleteReview(id: Int): Response\\lreportReview(id: Int): Response\\l}"];
+ ModerationController [label="{ModerationController|moderatorId: Int\\lqueueStatus: String\\ldateFrom: Date\\ldateTo: Date\\lpage: Int\\l|queue(): Response\\lapprove(placeId: Int): Response\\lreject(placeId: Int, reason: String): Response\\lreviewReport(reportId: Int): Response\\lhistory(): Response\\l}"];
+ User [label="{User|id: Int\\lname: String\\lemail: String\\lpasswordHash: String\\lrole: String\\l|register(data: Map): Bool\\llogin(email: String, password: String): Bool\\lupdateProfile(data: Map): Bool\\lhasRole(role: String): Bool\\ldeactivate(): Bool\\l}"];
+ Place [label="{Place|id: Int\\lownerId: Int\\lcategoryId: Int\\lname: String\\laddress: String\\l|create(data: Map): Place\\lupdate(data: Map): Bool\\lpublish(): Bool\\lsearch(query: String): List\\lsetModerationStatus(status: String): Bool\\l}"];
+ Category [label="{Category|id: Int\\lname: String\\lslug: String\\ldescription: String\\lisActive: Bool\\l|create(data: Map): Category\\lrename(name: String): Bool\\ldeactivate(): Bool\\llistActive(): List\\lfindBySlug(slug: String): Category\\l}"];
+ AccessibilityFeature [label="{AccessibilityFeature|id: Int\\lname: String\\ldescription: String\\lfeatureType: String\\lisActive: Bool\\l|create(data: Map): AccessibilityFeature\\lupdate(data: Map): Bool\\ldeactivate(): Bool\\llistActive(): List\\lvalidateValue(value: String): Bool\\l}"];
+ PlaceAccessibility [label="{PlaceAccessibility|id: Int\\lplaceId: Int\\lfeatureId: Int\\lvalue: String\\lnotes: String\\l|saveValue(value: String): Bool\\lupdateNotes(notes: String): Bool\\lmarkUnknown(): Bool\\lvalidate(): Bool\\ldelete(): Bool\\l}"];
+ Review [label="{Review|id: Int\\luserId: Int\\lplaceId: Int\\lrating: Int\\lcomment: String\\l|create(data: Map): Review\\ledit(comment: String, rating: Int): Bool\\ldelete(): Bool\\lvalidateRating(rating: Int): Bool\\lreport(): Report\\l}"];
+ Report [label="{Report|id: Int\\luserId: Int\\lplaceId: Int\\lreason: String\\lstatus: String\\l|submit(data: Map): Report\\lassignModerator(userId: Int): Bool\\lresolve(note: String): Bool\\lreject(note: String): Bool\\lreopen(): Bool\\l}"];
+ ModerationLog [label="{ModerationLog|id: Int\\lmoderatorId: Int\\lplaceId: Int\\laction: String\\lnote: String\\l|record(action: String): Bool\\lupdateNote(note: String): Bool\\llistForPlace(placeId: Int): List\\llistForModerator(userId: Int): List\\lexportCsv(): File\\l}"];
+ BaseController -> PlaceController [arrowhead=empty, style=dashed, label="наслідування"];
+ BaseController -> ReviewController [arrowhead=empty, style=dashed];
+ BaseController -> ModerationController [arrowhead=empty, style=dashed];
+ User -> Place [dir=both, arrowtail=none, arrowhead=none, label="1 owns 0..*"];
+ Category -> Place [dir=both, arrowtail=odiamond, arrowhead=none, label="1 groups 0..*"];
+ Place -> PlaceAccessibility [dir=both, arrowtail=diamond, arrowhead=none, label="1 contains 0..*"];
+ AccessibilityFeature -> PlaceAccessibility [dir=both, arrowtail=none, arrowhead=none, label="1 describes 0..*"];
+ User -> Review [dir=both, arrowtail=none, arrowhead=none, label="1 writes 0..*"];
+ Place -> Review [dir=both, arrowtail=diamond, arrowhead=none, label="1 receives 0..*"];
+ User -> Report [dir=both, arrowtail=none, arrowhead=none, label="1 submits 0..*"];
+ Place -> Report [dir=both, arrowtail=none, arrowhead=none, label="1 concerns 0..*"];
+ User -> ModerationLog [dir=both, arrowtail=none, arrowhead=none, label="1 performs 0..*"];
+ Place -> ModerationLog [dir=both, arrowtail=diamond, arrowhead=none, label="1 history 0..*"];
+}
