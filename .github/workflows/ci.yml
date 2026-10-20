@@ -24,4 +24,5 @@ jobs:
     - name: Run Tests
       run: vendor/bin/phpunit
 
-      run: echo "Secret: ${{ secrets.MY_SUPER_SECRET_KEY }}
+     - name: Demonstrate GitHub Secrets
+      run: echo "Secret: ${{ secrets.MY_SUPER_SECRET_KEY }}"
