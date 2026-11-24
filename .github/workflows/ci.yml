@@ -26,8 +26,14 @@ jobs:
           extensions: mbstring, sqlite3, pdo_sqlite
           coverage: none
 
-      - name: Install dependencies
+            - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Create environment file
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
 
       - name: Generate application key
         run: php artisan key:generate
