@@ -1,7 +1,36 @@
-/vendor/
-/logs/
-/node_modules/
+/.phpunit.cache
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
 .env
-.DS_Store
-.idea/
-.vscode/
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/auth.json
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+# Local database
+/database/database.sqlite
+
+# Temporary Laravel installation
+/temp_laravel/
+
+# Backups of previous laboratory work
+/tests_lab4_backup/
+/vendor_lab4_backup/
+
+# Local logs and editor settings
+/logs/
+/lab-3/.vscode/
